@@ -30,6 +30,9 @@
             cursor: pointer;
             transition: background-color 0.3s;
         }
+        .zhuyin-char.done {
+            border: 1px solid #7bd37c;
+        }
         .zhuyin-char:hover {
             background-color: #e9e9e9;
         }
@@ -60,9 +63,9 @@
             { char: 'ㄍ', pinyin: 'g', prononciation: 'Comme "g" dans "gare". La langue est à l\'arrière de la bouche, près de la gorge.' },
             { char: 'ㄎ', pinyin: 'k', prononciation: 'Comme "k" dans "car". La langue est également à l\'arrière, mais avec un souffle prononcé.' },
             { char: 'ㄏ', pinyin: 'h', prononciation: 'Comme "r" roulé en espagnol (comme "j" dans "jamón"). Détendez la gorge pour produire un son rugueux.' },
-            { char: 'ㄐ', pinyin: 'j', prononciation: 'Comme "Tji" , sans rouler la langue, avec le "j" presque inaudible' },
-            { char: 'ㄑ', pinyin: 'q', prononciation: 'Comme "ch" dans "chien". La langue est contre le palais, avec un souffle léger.' },
-            { char: 'ㄒ', pinyin: 'x', prononciation: 'Comme "ch" dans "mèche". Le son est doux et la langue est plate contre le palais.' },
+            { char: 'ㄐ', pinyin: 'j', prononciation: 'Comme "Tji" , sans rouler la langue, avec le "j" presque inaudible, bouche plate petite', done: true },
+            { char: 'ㄑ', pinyin: 'q', prononciation: 'Comme "Tsi" , sans rouler la langue, avec le "s" presque inaudible, bouche un peu plus large que pour "ㄐ"', done: true },
+            { char: 'ㄒ', pinyin: 'x', prononciation: 'Comme "chi" , sans rouler la langue, avec le "ch" prononcé, bouche un peu plus large que pour "ㄑ"', done: true },
             { char: 'ㄓ', pinyin: 'zh', prononciation: 'Un mélange entre "d" et "j". Prononcé avec la langue courbée vers l\'arrière.' },
             { char: 'ㄔ', pinyin: 'ch', prononciation: 'Comme "tch" dans "tchat", mais avec la langue courbée vers l\'arrière.' },
             { char: 'ㄕ', pinyin: 'sh', prononciation: 'Comme "ch" dans "chat", mais avec la langue courbée vers l\'arrière.' },
@@ -93,7 +96,7 @@
 
         zhuyinData.forEach(item => {
             const div = document.createElement('div');
-            div.className = 'zhuyin-char';
+            div.className = `zhuyin-char ${item.done ? 'done' : ''}`;
             div.textContent = item.char;
             div.onclick = () => showDetail(item);
             grid.appendChild(div);
@@ -104,6 +107,7 @@
                 <h2>${item.char}</h2>
                 <p><strong>Pinyin:</strong> ${item.pinyin}</p>
                 <p><strong>Prononciation approximative:</strong> ${item.prononciation}</p>
+                <p><strong>Fait:</strong> ${item.done ? '🟢' : '🔴'}</p>
             `;
             detail.style.display = 'block';
         }
