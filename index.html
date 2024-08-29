@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guide de prononciation Bopomofo (Zhuyin)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .zhuyin-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .zhuyin-char {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .zhuyin-char:hover {
+            background-color: #e9e9e9;
+        }
+        #detail {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin-top: 20px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Guide de prononciation Bopomofo (Zhuyin)</h1>
+    <div class="zhuyin-grid" id="zhuyinGrid"></div>
+    <div id="detail"></div>
+
+    <script>
+        const zhuyinData = [
+            { char: 'ㄅ', pinyin: 'b', prononciation: 'Comme "b" dans "bas". Les lèvres doivent être bien fermées, puis s\'ouvrir rapidement.' },
+            { char: 'ㄆ', pinyin: 'p', prononciation: 'Comme "p" dans "pas". Utilisez un souffle plus prononcé que pour "b".' },
+            { char: 'ㄇ', pinyin: 'm', prononciation: 'Comme "m" dans "mère". Les lèvres sont fermées puis relâchées.' },
+            { char: 'ㄈ', pinyin: 'f', prononciation: 'Comme "f" dans "faim". Les dents supérieures touchent légèrement la lèvre inférieure.' },
+            { char: 'ㄉ', pinyin: 'd', prononciation: 'Comme "d" dans "dans". Placez la langue derrière les dents supérieures.' },
+            { char: 'ㄊ', pinyin: 't', prononciation: 'Comme "t" dans "tante". La langue touche le toit de la bouche, avec un souffle léger.' },
+            { char: 'ㄋ', pinyin: 'n', prononciation: 'Comme "n" dans "non". La langue touche le toit de la bouche, près des dents.' },
+            { char: 'ㄌ', pinyin: 'l', prononciation: 'Comme "l" dans "là". La langue touche légèrement le toit de la bouche.' },
+            { char: 'ㄍ', pinyin: 'g', prononciation: 'Comme "g" dans "gare". La langue est à l\'arrière de la bouche, près de la gorge.' },
+            { char: 'ㄎ', pinyin: 'k', prononciation: 'Comme "k" dans "car". La langue est également à l\'arrière, mais avec un souffle prononcé.' },
+            { char: 'ㄏ', pinyin: 'h', prononciation: 'Comme "r" roulé en espagnol (comme "j" dans "jamón"). Détendez la gorge pour produire un son rugueux.' },
+            { char: 'ㄐ', pinyin: 'j', prononciation: 'Comme "j" dans "je", mais avec la langue plus plate contre le palais.' },
+            { char: 'ㄑ', pinyin: 'q', prononciation: 'Comme "ch" dans "chien". La langue est contre le palais, avec un souffle léger.' },
+            { char: 'ㄒ', pinyin: 'x', prononciation: 'Comme "ch" dans "mèche". Le son est doux et la langue est plate contre le palais.' },
+            { char: 'ㄓ', pinyin: 'zh', prononciation: 'Un mélange entre "d" et "j". Prononcé avec la langue courbée vers l\'arrière.' },
+            { char: 'ㄔ', pinyin: 'ch', prononciation: 'Comme "tch" dans "tchat", mais avec la langue courbée vers l\'arrière.' },
+            { char: 'ㄕ', pinyin: 'sh', prononciation: 'Comme "ch" dans "chat", mais avec la langue courbée vers l\'arrière.' },
+            { char: 'ㄖ', pinyin: 'r', prononciation: 'Comme "r" dans "rare", mais avec une vibration de la langue.' },
+            { char: 'ㄗ', pinyin: 'z', prononciation: 'Comme "ds" dans "oiseaux". La langue est juste derrière les dents.' },
+            { char: 'ㄘ', pinyin: 'c', prononciation: 'Comme "ts" dans "tsar". La langue est également juste derrière les dents avec un souffle prononcé.' },
+            { char: 'ㄙ', pinyin: 's', prononciation: 'Comme "s" dans "si". La langue touche légèrement les dents supérieures.' },
+            { char: 'ㄚ', pinyin: 'a', prononciation: 'Comme "a" dans "papa". La bouche est grande ouverte.' },
+            { char: 'ㄛ', pinyin: 'o', prononciation: 'Comme "o" dans "corps". La bouche est arrondie.' },
+            { char: 'ㄜ', pinyin: 'e', prononciation: 'Comme "eu" dans "peur". La bouche est légèrement ouverte et les lèvres sont relaxées.' },
+            { char: 'ㄝ', pinyin: 'ê', prononciation: 'Comme "è" dans "mère".' },
+            { char: 'ㄞ', pinyin: 'ai', prononciation: 'Comme "aï" dans "aïe".' },
+            { char: 'ㄟ', pinyin: 'ei', prononciation: 'Comme "é" dans "été".' },
+            { char: 'ㄠ', pinyin: 'ao', prononciation: 'Comme "ao" dans "macao".' },
+            { char: 'ㄡ', pinyin: 'ou', prononciation: 'Comme "ou" dans "bout".' },
+            { char: 'ㄢ', pinyin: 'an', prononciation: 'Comme "an" dans "ancre".' },
+            { char: 'ㄣ', pinyin: 'en', prononciation: 'Comme "en" dans "ensuite".' },
+            { char: 'ㄤ', pinyin: 'ang', prononciation: 'Comme "ang" dans "angle".' },
+            { char: 'ㄥ', pinyin: 'eng', prononciation: 'Comme "eng" dans "engager".' },
+            { char: 'ㄦ', pinyin: 'er', prononciation: 'Comme "er" dans "super". Utilisé souvent en fin de mot pour un son arrondi.' },
+            { char: 'ㄧ', pinyin: 'yi', prononciation: 'Comme "i" dans "si".' },
+            { char: 'ㄨ', pinyin: 'wu', prononciation: 'Comme "ou" dans "vous".' },
+            { char: 'ㄩ', pinyin: 'yu', prononciation: 'Comme "u" dans "mur". La langue est proche du palais.' }
+        ];
+
+        const grid = document.getElementById('zhuyinGrid');
+        const detail = document.getElementById('detail');
+
+        zhuyinData.forEach(item => {
+            const div = document.createElement('div');
+            div.className = 'zhuyin-char';
+            div.textContent = item.char;
+            div.onclick = () => showDetail(item);
+            grid.appendChild(div);
+        });
+
+        function showDetail(item) {
+            detail.innerHTML = `
+                <h2>${item.char}</h2>
+                <p><strong>Pinyin:</strong> ${item.pinyin}</p>
+                <p><strong>Prononciation approximative:</strong> ${item.prononciation}</p>
+            `;
+            detail.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
